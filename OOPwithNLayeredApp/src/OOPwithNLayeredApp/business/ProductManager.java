@@ -1,14 +1,19 @@
 package OOPwithNLayeredApp.business;
 
+import OOPwithNLayeredApp.com.logging.Logger;
 import OOPwithNLayeredApp.dataAccess.HibernateProductDao;
 import OOPwithNLayeredApp.dataAccess.ProductDao;
 import OOPwithNLayeredApp.entities.Product;
 import OOPwithNLayeredApp.dataAccess.jdbcProductDao;
 
+import java.util.List;
+
 public class ProductManager {
     private ProductDao productDao;
-    public ProductManager(ProductDao productDao) {
+    private Logger[] loggers;
+    public ProductManager(ProductDao productDao, Logger[] loggers) {
         this.productDao = productDao;
+        this.loggers = loggers;
     }
 
     public void add(Product product) throws Exception {
@@ -24,5 +29,10 @@ public class ProductManager {
 
         // productDao Interface'i üzerinden çalıştıralım böylece bir yere bağımlı kalmayalım
         productDao.add(product);
+
+        for (Logger logger: loggers) {
+            logger.log(product.getName());
+            
+        }
     }
 }
