@@ -11,7 +11,6 @@ import logging.FileLogger;
 import logging.Logger;
 import logging.MailLogger;
 
-import javax.xml.catalog.Catalog;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -20,10 +19,8 @@ public class Main {
 
         // Category Add
         Category categoryProgramlama = new Category("Programlama");
-        // Category validator
-        CategoryValidator categoryValidator = new CategoryValidator(categoryProgramlama);
         // Construct
-        CategoryManager categoryManager = new CategoryManager(new HibernateCategoryDao(), loggers, categoryValidator);
+        CategoryManager categoryManager = new CategoryManager(new HibernateCategoryDao(), loggers);
         categoryManager.add(categoryProgramlama);
 
         // Lecturer Add
@@ -34,11 +31,12 @@ public class Main {
         // Course Add
         Course courseJava = new Course(1, "Java Kampı", "www.resim.com/javacourse", 100,
                 categoryProgramlama, lecturerMert);
-        // Category validator
-        CourseValidator courseValidator = new CourseValidator(courseJava);
+        Course courseJavascript = new Course(2, "Java Kampı", "www.resim.com/javascriptcourse", -500,
+                categoryProgramlama, lecturerMert);
         // Construct
         CourseManager courseManager = new CourseManager(new HibernateCourseDao(), loggers);
         courseManager.add(courseJava);
+        courseManager.add(courseJavascript);
 
 
 

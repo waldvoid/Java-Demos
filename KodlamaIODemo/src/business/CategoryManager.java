@@ -7,12 +7,10 @@ import logging.Logger;
 public class CategoryManager{
     ICategoryDao categoryDao;
     Logger[] loggers;
-    CategoryValidator validator;
 
-    public CategoryManager(ICategoryDao categoryDao, Logger[] loggers, CategoryValidator validator) {
+    public CategoryManager(ICategoryDao categoryDao, Logger[] loggers) {
         this.categoryDao = categoryDao;
         this.loggers = loggers;
-        this.validator = validator;
     }
 
     public void add(Category category) {

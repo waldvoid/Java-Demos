@@ -4,25 +4,47 @@ import dataAccess.ICourseDao;
 import entities.Course;
 import logging.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class CourseManager {
    ICourseDao courseDao;
    Logger[] loggers;
-   CourseValidator validator;
+   List<Course> courses;
 
-    public CourseManager(ICourseDao courseDao, Logger[] loggers, CourseValidator validator) {
+
+    public CourseManager(ICourseDao courseDao, Logger[] loggers) {
         this.courseDao = courseDao;
         this.loggers = loggers;
-        this.validator = validator;
     }
 
-    public void add(Course course) {
+
+
+    public void add(Course course) throws Exception {
+        for (Course c: courses) {
+            if(c.getCourseName().equals(course.getCourseName())) {
+                throw new Exception("Girdiğiniz kurs zaten mevcut lütfen başka bir isim giriniz.");
+            }
+            if(course.getCoursePrice() < 0) {
+                throw new Exception("Kursun fiyatı 0 TL'den az olamaz");
+            }
+        }
         courseDao.add(course);
         for (Logger logger : loggers) {
             logger.log(course.getCourseName() + " Eklendi");
         }
     }
 
-    public void remove(Course course) {
+    public void remove(Course course) throws Exception {
+        for (Course c: courses) {
+            if(c.getCourseName().equals(course.getCourseName())) {
+                throw new Exception("Girdiğiniz kurs zaten mevcut lütfen başka bir isim giriniz.");
+            }
+            if(course.getCoursePrice() < 0) {
+                throw new Exception("Kursun fiyatı 0 TL'den az olamaz");
+            }
+        }
         courseDao.remove(course);
         for (Logger logger : loggers) {
             logger.log(course.getCourseName() + " Silindi");
