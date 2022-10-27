@@ -2,16 +2,12 @@ package business;
 
 import dataAccess.ICourseDao;
 import entities.Course;
-import logging.Logger;
-
-import java.util.ArrayList;
-import java.util.List;
+import core.logging.Logger;
 
 
 public class CourseManager {
    ICourseDao courseDao;
    Logger[] loggers;
-   List<Course> courses;
 
 
     public CourseManager(ICourseDao courseDao, Logger[] loggers) {
@@ -22,12 +18,12 @@ public class CourseManager {
 
 
     public void add(Course course) throws Exception {
-        for (Course c: courses) {
+        if(course.getCoursePrice() < 0) {
+            throw new Exception("Kursun fiyatı 0 TL'den az olamaz");
+        }
+        for (Course c: courseDao.getAll()) {
             if(c.getCourseName().equals(course.getCourseName())) {
                 throw new Exception("Girdiğiniz kurs zaten mevcut lütfen başka bir isim giriniz.");
-            }
-            if(course.getCoursePrice() < 0) {
-                throw new Exception("Kursun fiyatı 0 TL'den az olamaz");
             }
         }
         courseDao.add(course);
@@ -37,7 +33,7 @@ public class CourseManager {
     }
 
     public void remove(Course course) throws Exception {
-        for (Course c: courses) {
+        for (Course c: courseDao.getAll()) {
             if(c.getCourseName().equals(course.getCourseName())) {
                 throw new Exception("Girdiğiniz kurs zaten mevcut lütfen başka bir isim giriniz.");
             }

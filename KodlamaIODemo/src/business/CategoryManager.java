@@ -2,7 +2,7 @@ package business;
 
 import dataAccess.ICategoryDao;
 import entities.Category;
-import logging.Logger;
+import core.logging.Logger;
 
 public class CategoryManager{
     ICategoryDao categoryDao;

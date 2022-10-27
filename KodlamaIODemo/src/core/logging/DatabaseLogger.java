@@ -1,4 +1,4 @@
-package logging;
+package core.logging;
 
 public class DatabaseLogger implements Logger {
     @Override

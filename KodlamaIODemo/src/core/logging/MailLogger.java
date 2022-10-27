@@ -1,4 +1,4 @@
-package logging;
+package core.logging;
 
 public class MailLogger implements Logger {
     @Override

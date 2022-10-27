@@ -1,4 +1,4 @@
-package logging;
+package core.logging;
 
 public class FileLogger implements Logger{
     @Override

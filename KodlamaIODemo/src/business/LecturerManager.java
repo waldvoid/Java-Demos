@@ -2,7 +2,7 @@ package business;
 
 import dataAccess.ILecturerDao;
 import entities.Lecturer;
-import logging.Logger;
+import core.logging.Logger;
 
 public class LecturerManager{
     ILecturerDao lecturerDao;
