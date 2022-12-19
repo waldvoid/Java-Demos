@@ -1,9 +1,11 @@
 package main;
 import entity.Player;
+import object.SuperObject;
 import tile.TileManager;
 
 import javax.swing.JPanel;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
     // game screen of the game
@@ -18,13 +20,22 @@ public class GamePanel extends JPanel implements Runnable{
     public final int screenWidth = tileSize * maxScreenCol; // 768 pixels
     public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 
+    //world settings
+    public final int maxWorldCol = 50;
+    public final int maxWorldRow = 50;
+    public final int worldWidth = tileSize * maxWorldCol;
+    public final int worldHeight = tileSize * maxWorldRow;
+
     // set fps
     int fps = 60;
 
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    Player player = new Player(this,keyH);
-    TileManager tileManager = new TileManager(this);
+    public Player player = new Player(this,keyH);
+    public TileManager tileManager = new TileManager(this);
+    public CollisionManager collisionManager = new CollisionManager(this);
+    public ArrayList<SuperObject> objects = new ArrayList<SuperObject>();
+    public ObjectManager objectManager = new ObjectManager(this);
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -34,6 +45,11 @@ public class GamePanel extends JPanel implements Runnable{
         this.setFocusable(true);
 
     }
+    public void setupGame() {
+        objectManager.setObject();
+    }
+
+
     // instanciate game thread and start thread
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -117,6 +133,11 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         tileManager.draw(g2);
+        for (int i = 0; i < objects.size() ; i++) {
+            if(objects.get(i) != null) {
+                objects.get(i).draw(g2, this);
+            }
+        }
         player.draw(g2);
         // release system resource with disposing to save memory
         g2.dispose();

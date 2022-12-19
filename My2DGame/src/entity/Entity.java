@@ -1,10 +1,11 @@
 package entity;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 //superclass for variables
 public class Entity {
-    public int x, y;
+    public int worldX, worldY;
     public int speed;
 
     // Image with an accessible buffer of image data
@@ -14,5 +15,7 @@ public class Entity {
     // walking animation sprites image 1 -2 change
     public int spriteCounter = 0;
     public int spriteNum = 1;
+    public Rectangle solidArea;
+    public boolean collisionOn = false;
 
 }

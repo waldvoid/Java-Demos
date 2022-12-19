@@ -11,12 +11,20 @@ import java.io.IOException;
 public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
+    public final int screenX;
+    public final int screenY;
 
 
     // constructor
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
+
+        // player is at the center of screen
+        screenX = gp.screenWidth / 2 - (gp.tileSize/2);
+        screenY = gp.screenHeight / 2 - (gp.tileSize/2);
+        // collision rectangle
+        solidArea = new Rectangle(8, 16, gp.tileSize * 3/4 , gp.tileSize * 3/4);
         // whenever it begins start with default values
         setDefaultValues();
         getPlayerImage();
@@ -24,22 +32,22 @@ public class Player extends Entity {
 
     // set players default settings - we can't handle it in gamepanel too messy
     public void setDefaultValues() {
-        x = 100;
-        y = 100;
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 21;
         speed = 4;
         direction = "down";
     }
     public void getPlayerImage() {
         try {
             //entity buffered image fill
-            up1 = ImageIO.read(getClass().getResourceAsStream("/res/player/boy_up_1.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/res/player/boy_up_2.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/res/player/boy_down_1.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/res/player/boy_down_2.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/res/player/boy_left_1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/res/player/boy_left_2.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/res/player/boy_right_1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/res/player/boy_right_2.png"));
+            up1 = ImageIO.read(getClass().getResourceAsStream("/res/player/hulky_up_1.png"));
+            up2 = ImageIO.read(getClass().getResourceAsStream("/res/player/hulky_up_2.png"));
+            down1 = ImageIO.read(getClass().getResourceAsStream("/res/player/hulky_down_1.png"));
+            down2 = ImageIO.read(getClass().getResourceAsStream("/res/player/hulky_down_2.png"));
+            left1 = ImageIO.read(getClass().getResourceAsStream("/res/player/hulky_left_1.png"));
+            left2 = ImageIO.read(getClass().getResourceAsStream("/res/player/hulky_left_2.png"));
+            right1 = ImageIO.read(getClass().getResourceAsStream("/res/player/hulky_right_1.png"));
+            right2 = ImageIO.read(getClass().getResourceAsStream("/res/player/hulky_right_2.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,17 +57,29 @@ public class Player extends Entity {
         if(keyH.rightPressed || keyH.downPressed || keyH.upPressed || keyH.leftPressed) {
         if (keyH.upPressed) {
             direction = "up";
-            y-= speed;
         } else if (keyH.downPressed) {
             direction = "down";
-            y+= speed;
         } else if (keyH.leftPressed) {
             direction = "left";
-            x -= speed;
         } else if (keyH.rightPressed) {
             direction = "right";
-            x += speed;
         }
+        // checking tile collision
+        collisionOn = false;
+        gp.collisionManager.checkTile(this);
+        // if collision is false, player can move
+            if(collisionOn == false) {
+                switch (direction) {
+                    case "up": worldY-= speed;
+                        break;
+                    case "down": worldY+= speed;
+                        break;
+                    case "left": worldX -= speed;
+                        break;
+                    case "right": worldX += speed;
+                        break;
+                }
+            }
         spriteCounter++;
         if(spriteCounter > 12) {
             if (spriteNum == 1) {
@@ -115,7 +135,8 @@ public class Player extends Entity {
             default:
                 System.out.println("Wrong image buffer");
         }
-        g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
+        // screenx ve screeny değişmeyecek oyun boyunca
+        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 
     }
 
