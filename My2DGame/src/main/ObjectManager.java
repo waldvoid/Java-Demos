@@ -1,6 +1,7 @@
 package main;
 
 
+import object.ObjectBoots;
 import object.ObjectChest;
 import object.ObjectDoor;
 import object.ObjectKey;
@@ -38,5 +39,9 @@ public class ObjectManager {
         gp.objects.add(6, new ObjectChest());
         gp.objects.get(6).worldX = 10 * gp.tileSize;
         gp.objects.get(6).worldY = 7 * gp.tileSize;
+
+        gp.objects.add(7, new ObjectBoots());
+        gp.objects.get(7).worldX = 37 * gp.tileSize;
+        gp.objects.get(7).worldY = 42 * gp.tileSize;
     }
 }

@@ -11,5 +11,7 @@ public class ObjectKey extends SuperObject{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        // if needed a spesific solid size for collision
+        // solidArea.x = 5;
     }
 }

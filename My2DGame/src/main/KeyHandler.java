@@ -10,6 +10,8 @@ public class KeyHandler implements KeyListener {
     public void keyTyped(KeyEvent e) {
 
     }
+    // DEBUGGING
+    boolean checkDrawTime = false;
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -50,6 +52,14 @@ public class KeyHandler implements KeyListener {
         // right
         if (code == KeyEvent.VK_D) {
             rightPressed = false;
+        }
+        // DEBUGGING
+        if(code == KeyEvent.VK_T) {
+            if(checkDrawTime == true) {
+                checkDrawTime = false;
+            } else if(checkDrawTime == false) {
+                checkDrawTime = true;
+            }
         }
     }
 }

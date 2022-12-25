@@ -13,6 +13,7 @@ public class Player extends Entity {
     KeyHandler keyH;
     public final int screenX;
     public final int screenY;
+    int hasKey;
 
 
     // constructor
@@ -25,6 +26,8 @@ public class Player extends Entity {
         screenY = gp.screenHeight / 2 - (gp.tileSize/2);
         // collision rectangle
         solidArea = new Rectangle(8, 16, gp.tileSize * 3/4 , gp.tileSize * 3/4);
+        solidAreaDefaultX = solidArea.x;
+        SolidAreaDefaultY = solidArea.y;
         // whenever it begins start with default values
         setDefaultValues();
         getPlayerImage();
@@ -67,6 +70,11 @@ public class Player extends Entity {
         // checking tile collision
         collisionOn = false;
         gp.collisionManager.checkTile(this);
+
+        // checking object collision
+           int objIndex = gp.collisionManager.checkObject(this, true);
+           pickUpObject(objIndex);
+
         // if collision is false, player can move
             if(collisionOn == false) {
                 switch (direction) {
@@ -91,6 +99,35 @@ public class Player extends Entity {
         }
         }
     }
+
+    public void pickUpObject(int i) {
+        // if index (i) is not 999 we touched the object but if it's 999 we didnt touch
+        if (i != 999){
+            String objectName = gp.objects.get(i).name;
+
+            switch(objectName) {
+                case "Key":
+                    hasKey++;
+                    gp.playSoundEffect(7);
+                    gp.objects.remove(i);
+                    break;
+            case "Door":
+                if(hasKey > 0) {
+                    gp.playSoundEffect(5);
+                    gp.objects.remove(i);
+                    hasKey--;
+                }
+                break;
+                case "Boot":
+                    gp.playSoundEffect(8);
+                    speed += 1;
+                    gp.objects.remove(i);
+                    break;
+            }
+            System.out.println("You have " + hasKey + " keys");
+        }
+    }
+
     public void draw(Graphics2D g2) {
 //        //rectangle example test
 //        g2.setColor(Color.white);
